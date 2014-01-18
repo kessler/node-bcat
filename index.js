@@ -3,7 +3,21 @@
 var http = require('http')
 var child = require('child_process')
 var findPort = require('find-port')
-var argv = require('optimist').argv
+var opts = require('optimist')
+.options('port', {
+	description: 'set a port for this bcat execution'
+})
+.options('contentType', {
+	default: 'text/html',
+	description: 'content type header'
+})
+
+var argv = opts.argv
+
+if (argv.usage) {
+	console.log(opts.help())
+	process.exit(0)
+}
 
 if (argv.port) {
 	cat(argv.port)
@@ -16,10 +30,12 @@ if (argv.port) {
 	})
 }
 
-
+var contentType = 'text/html';
 
 function cat(port) {
 	var server = http.createServer(function(request, response) {
+		response.setHeader('Content-Type', argv.contentType)
+
 		process.stdin.pipe(response)
 		response.on('finish', function () {
 			process.exit(0)
