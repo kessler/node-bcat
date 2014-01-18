@@ -10,4 +10,4 @@ Pipe to browser utility, this is (sort of a) a [bcat](https://github.com/rtomayk
 > echo '<hr>' | bcat
 ```
 
-![be a good cat](https://www.facebook.com/photo.php?fbid=10150923621387325&l=681f9cdcf9)
+![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
