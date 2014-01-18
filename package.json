@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "A pipe to browser utility",
   "main": "index.js",
-  "bin": "index.js",
+  "bin": {
+    "bcat": "index.js"
+  },
   "scripts": {
     "test": "mocha"
   },
