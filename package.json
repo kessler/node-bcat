@@ -1,0 +1,29 @@
+{
+  "name": "node-bcat",
+  "version": "0.0.1",
+  "description": "A pipe to browser utility",
+  "main": "index.js",
+  "bin": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kessler/node-bcat"
+  },
+  "keywords": [
+    "pipe",
+    "browser",
+    "cat",
+    "bcat"
+  ],
+  "author": "Yaniv Kessler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kessler/node-bcat/issues"
+  },
+  "dependencies": {
+    "find-port": "0.0.3",
+    "optimist": "~0.6.0"
+  }
+}
