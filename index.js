@@ -44,7 +44,7 @@ function cat(port) {
 
 	server.listen(port)
 
-	var commmand = 'open'
+	var command = 'open'
 
 	if (process.platform === 'win32')
 		command = 'start'
