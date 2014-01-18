@@ -1,5 +1,5 @@
 {
-  "name": "node-bcat",
+  "name": "bcat",
   "version": "0.0.1",
   "description": "A pipe to browser utility",
   "main": "index.js",
