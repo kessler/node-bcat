@@ -3,6 +3,8 @@
 var http = require('http')
 var child = require('child_process')
 var findPort = require('find-port')
+var ansi = require('ansi-html-stream')
+
 var opts = require('optimist')
 .options('port', {
 	description: 'set a port for this bcat execution'
@@ -36,7 +38,11 @@ function cat(port) {
 	var server = http.createServer(function(request, response) {
 		response.setHeader('Content-Type', argv.contentType)
 
-		process.stdin.pipe(response)
+		if (argv.contentType === 'text/plain')
+			process.stdin.pipe(ansi).pipe(response)
+		else
+			process.stdin.pipe(response)
+
 		response.on('finish', function () {
 			process.exit(0)
 		})

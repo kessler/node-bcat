@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "find-port": "0.0.3",
-    "optimist": "~0.6.0"
+    "optimist": "~0.6.0",
+    "ansi-html-stream": "0.0.2"
   }
 }
