@@ -1,5 +1,4 @@
 # node-bcat
-
 Pipe to browser utility, this is (sort of a) a [bcat](https://github.com/rtomayko/bcat) clone in javascript.
 ## usage
 ```
@@ -9,6 +8,7 @@ Pipe to browser utility, this is (sort of a) a [bcat](https://github.com/rtomayk
   --ansiBackground, --ansiBg  change the background when displaying ansi  [default: "#000000"]
   --backgroundColor, --bg     change the background color in the browser  [default: "#ffffff"]
 ```
+An available port between 8080 - 8181 will be automatically picked if --port is not specified
 ## example
 ```
 > npm install -g bcat
