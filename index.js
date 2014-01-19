@@ -57,6 +57,8 @@ var ansiOptions = {
 	}
 };
 
+var script = 'window.setInterval(function () { document.getElementById(\'container\').scrollIntoView(); console.log(1); }, 1000)';
+
 function cat(port) {
 	var server = http.createServer(function(request, response) {
 		response.setHeader('Content-Type', argv.contentType)
@@ -75,9 +77,9 @@ function cat(port) {
 			process.stdin.pipe(response)
 		}
 
-		response.write('<html><head><style>' + style + '</style></head><body>')
+		response.write('<html><head><script>' + script + '</script><style>' + style + '</style></head><body><div id="container">')
 
-		process.stdin.on('finish', function() {
+		process.stdin.on('close', function() {
 			console.log(1)
 		})
 
