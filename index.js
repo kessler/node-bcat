@@ -57,7 +57,7 @@ var ansiOptions = {
 	}
 };
 
-var script = 'window.setInterval(function () { document.getElementById(\'container\').scrollIntoView(); console.log(1); }, 1000)';
+var script = 'window.setInterval(function () { document.getElementById(\'container\').scrollIntoView(false); }, 1000)';
 
 function cat(port) {
 	var server = http.createServer(function(request, response) {
