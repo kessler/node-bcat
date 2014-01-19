@@ -1,7 +1,15 @@
 # node-bcat
 
 Pipe to browser utility, this is (sort of a) a [bcat](https://github.com/rtomayko/bcat) clone in javascript.
-
+## usage
+```
+  --port                      set a port for this bcat execution
+  --contentType               content type header                         [default: "text/html"]
+  --ansi                      add --ansi to show colorful ansi
+  --ansiBackground, --ansiBg  change the background when displaying ansi  [default: "#000000"]
+  --backgroundColor, --bg     change the background color in the browser  [default: "#ffffff"]
+```
+## example
 ```
 > npm install -g bcat
 
