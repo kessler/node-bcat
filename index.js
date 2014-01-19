@@ -13,6 +13,19 @@ var opts = require('optimist')
 	default: 'text/html',
 	description: 'content type header'
 })
+.options('ansi', {
+	description: 'add --ansi to show colorful ansi'
+})
+.options('ansiBackground', {
+	alias: 'ansiBg',
+	default: '#000000',
+	description: 'change the background when displaying ansi'
+})
+.options('backgroundColor', {
+	alias: 'bg',
+	default: '#ffffff',
+	description: 'change the background color in the browser'
+})
 
 var argv = opts.argv
 
@@ -38,10 +51,20 @@ function cat(port) {
 	var server = http.createServer(function(request, response) {
 		response.setHeader('Content-Type', argv.contentType)
 
-		if (argv.contentType === 'text/plain')
-			process.stdin.pipe(ansi).pipe(response)
-		else
+		var bg = argv.bg
+
+		if (argv.ansi) {
+			bg = argv.ansiBg
+			process.stdin.pipe(ansi()).pipe(response)
+		} else {
 			process.stdin.pipe(response)
+		}
+
+		response.write('<html><head></head><body style="background-color:' + bg + '">')
+
+		process.stdin.on('end', function() {
+			console.log(1)
+		})
 
 		response.on('finish', function () {
 			process.exit(0)
