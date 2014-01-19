@@ -27,6 +27,10 @@
   "dependencies": {
     "find-port": "0.0.3",
     "optimist": "~0.6.0",
-    "ansi-html-stream": "0.0.2"
+    "ansi-html-stream": "0.0.2",
+    "replacestream": "0.0.6"
+  },
+  "devDependencies": {
+    "eyes": "~0.1.8"
   }
 }

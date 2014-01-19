@@ -4,6 +4,7 @@ var http = require('http')
 var child = require('child_process')
 var findPort = require('find-port')
 var ansi = require('ansi-html-stream')
+var replaceStream = require('replacestream')
 
 var opts = require('optimist')
 .options('port', {
@@ -47,22 +48,36 @@ if (argv.port) {
 
 var contentType = 'text/html';
 
+var ansiOptions = {
+	foregrounds: {
+    	'30': { style: 'color:#fffaaa' } // black
+    },
+	backgrounds: {
+		'40': { style: 'background-color:#fffaaa' } // black
+	}
+};
+
 function cat(port) {
 	var server = http.createServer(function(request, response) {
 		response.setHeader('Content-Type', argv.contentType)
 
-		var bg = argv.bg
+		var style
 
 		if (argv.ansi) {
-			bg = argv.ansiBg
-			process.stdin.pipe(ansi()).pipe(response)
+			style = 'body { background-color: ' + argv.ansiBg + '; color: #ffffff }'
+
+			process.stdin
+				.pipe(ansi(ansiOptions))
+				.pipe(replaceStream('\n', '<br />'))
+				.pipe(response)
 		} else {
+			style = 'body { background-color: ' + argv.bg + '; }'
 			process.stdin.pipe(response)
 		}
 
-		response.write('<html><head></head><body style="background-color:' + bg + '">')
+		response.write('<html><head><style>' + style + '</style></head><body>')
 
-		process.stdin.on('end', function() {
+		process.stdin.on('finish', function() {
 			console.log(1)
 		})
 

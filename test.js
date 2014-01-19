@@ -5,4 +5,7 @@ var obj = {
 	y: 2
 }
 
+console.log('abcdefg foo bar')
+inspect(obj)
+inspect(obj)
 inspect(obj)
