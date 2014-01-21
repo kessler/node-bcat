@@ -1,6 +1,6 @@
 {
   "name": "bcat",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "A pipe to browser utility",
   "main": "index.js",
   "bin": {
@@ -28,7 +28,9 @@
     "find-port": "0.0.3",
     "optimist": "~0.6.0",
     "ansi-html-stream": "0.0.2",
-    "replacestream": "0.0.6"
+    "replacestream": "0.0.6",
+    "rc": "~0.3.3",
+    "text-table": "~0.2.0"
   },
   "devDependencies": {
     "eyes": "~0.1.8"
