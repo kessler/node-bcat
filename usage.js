@@ -11,7 +11,7 @@ module.exports = table([
 ['--disableTabReplace', 	'disable tab replacement', 					'[default: false]\n'],
 ['--newlineReplace', 		'new line replacement', 					'[default: "<br />"\n'],
 ['--disableNewlineReplace', 'disable new line replacement', 			'[default: false]\n'],
-['--ansi', 					'show colorful ansi (implies text/html)', 	'[default: false]\n'],
+['--ansi', 					'show colorful ansi (implies text/html)', 	'[default: true]\n'],
 ['--ansiOptions', 			'override replacement of ansi black color\n', ''],
 ['--scrollDownInterval', 	'interval to execute javascript scroll down ', '[default: 1000 (ms)]\n']
 ]);
