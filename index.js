@@ -51,7 +51,41 @@ if (config.port) {
 	})
 }
 
-var script = 'window.setInterval(function () { document.getElementById(\'container\').scrollIntoView(false); }, ' + config.scrollDownInterval + ')'
+/* this part is rendered into client side script (inside the browser) */
+var clientConfig = {
+	scrollDownInterval: config.scrollDownInterval
+};
+
+function run() {
+	var ref
+	function startAutoScroll() {
+		ref = window.setInterval(function () {
+			document.getElementById('container').scrollIntoView(false)
+		}, clientConfig.scrollDownInterval)
+	}
+
+	function stopAutoScroll() {
+		clearInterval(ref)
+	}
+
+    var scrollToggle = document.getElementById('autoscrollToggle')
+
+    if (scrollToggle) {
+    	scrollToggle.addEventListener('change', function () {
+    		if (scrollToggle.checked) {
+    			startAutoScroll()
+    		} else {
+    			stopAutoScroll()
+    		}
+    	});
+    }
+
+    startAutoScroll()
+
+}
+/**/
+
+var script = 'var clientConfig = ' + JSON.stringify(clientConfig) + '\n' + run.toString() + '\nrun()'
 
 function cat(port) {
 
@@ -100,9 +134,14 @@ function cat(port) {
 
 		if (contentType === 'text/html') {
 
-			var style = 'body { background-color: ' + bg + '; color: ' + fg + ' }'
+			var style = 'body { background-color: ' + bg + '; color: ' + fg + ' } ' +
+						'div#autoscroll { position: fixed; top: 1em; right: 1em }'
 
-			response.write('<html><head><script>' + script + '</script><style>' + style + '</style></head><body><div id="container">')
+
+			response.write('<html><head><style>' + style + '</style></head>' +
+							'<body>' +
+							'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
+							'<script>' + script + '</script><div id="container">')
 		}
 
 		stream.pipe(response)

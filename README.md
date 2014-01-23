@@ -1,6 +1,8 @@
 # node-bcat
 Pipe to browser utility, this is (sort of a) a [bcat](https://github.com/rtomayko/bcat) clone in javascript. Very useful for log tail fun :)
 
+node-bcat features auto scrolling (with enable/disable), ansi to html coloring and behavior and color customization.
+
 This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc
 ## usage
 ```
@@ -38,4 +40,5 @@ then
 ```
 > node test.js | bcat
 ```
+![screenshot](https://raw.github.com/kessler/static/master/node-bcat.png)
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
