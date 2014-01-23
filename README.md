@@ -41,4 +41,5 @@ then
 > node test.js | bcat
 ```
 ![screenshot](https://raw.github.com/kessler/static/master/node-bcat.png)
+
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
