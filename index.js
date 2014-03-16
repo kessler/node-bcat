@@ -81,7 +81,6 @@ function run() {
     }
 
     startAutoScroll()
-
 }
 /**/
 

@@ -27,6 +27,9 @@ An available port between 8080 - 8181 will be automatically picked if --port is 
 > cat somefile | bcat
 
 > echo '<hr>' | bcat
+
+// redirect error stream also
+> node index.js 2>&1 | bcat
 ```
 Want to see something moving too?
 

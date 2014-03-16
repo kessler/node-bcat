@@ -1,6 +1,8 @@
 var inspect = require('eyes').inspector(/*{ stream: null }*/);
 var util = require('util')
 
+console.error('ERROR!!!')
+
 var obj = {
 	x: 1,
 	y: 2,
