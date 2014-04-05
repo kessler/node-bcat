@@ -3,7 +3,8 @@ Pipe to browser utility, this is (sort of a) a [bcat](https://github.com/rtomayk
 
 node-bcat features auto scrolling (with enable/disable), ansi to html coloring and behavior and color customization.
 
-This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc
+This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc. Also, you should take a look at [scat](https://github.com/hughsk/scat) which pipes javascript into your browser
+
 ## usage
 ```
  --port                   set a port for this bcat execution
@@ -43,8 +44,6 @@ then
 ```
 > node test.js | bcat
 ```
-Also, you should take a look at [scat](https://github.com/hughsk/scat) (pipes javascript into your browser)
-
 ![screenshot](https://raw.github.com/kessler/static/master/node-bcat.png)
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
