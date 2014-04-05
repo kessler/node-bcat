@@ -43,6 +43,7 @@ then
 ```
 > node test.js | bcat
 ```
+Also, you should take a look at [scat](https://github.com/hughsk/scat) (pipes javascript into your browser)
 ![screenshot](https://raw.github.com/kessler/static/master/node-bcat.png)
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
