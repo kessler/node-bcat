@@ -24,7 +24,7 @@ var config = rc('bcat', {
 	disableTabReplace: false,
 	newlineReplace: '<br />',
 	disableNewlineReplace: false,
-	ansi: true,
+	ansi: false,
 	ansiOptions: {
 		foregrounds: {
 	    	'30': { style: 'color:#fffaaa' } // black
