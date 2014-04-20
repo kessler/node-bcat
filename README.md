@@ -29,8 +29,6 @@ This module uses [RC](https://github.com/dominictarr/rc) to manage its configura
 
 > cat somefile | bcat
 
-> echo '<hr>' | bcat
-
 // redirect error stream also
 > node index.js 2>&1 | bcat
 ```
