@@ -6,7 +6,6 @@ node-bcat features auto scrolling (with enable/disable), ansi to html coloring (
 This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc. 
 
 _Also, you should take a look at_ ___[scat](https://github.com/hughsk/scat)___ _which pipes javascript into your browser or_ ___[hcat](https://github.com/kessler/node-hcat)___ _that pipes html into your browser._
-
 ## example
 ```
 > npm install -g bcat
