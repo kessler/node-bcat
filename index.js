@@ -92,6 +92,8 @@ function cat(port) {
 	var server = http.createServer(handler)
 
 	server.listen(port)
+	
+	server.setTimeout(0);
 
 	var command = 'open'
 
