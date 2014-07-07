@@ -43,6 +43,7 @@ then
  --ansi                   show colorful ansi (implies text/html)       [default: true]
  --ansiOptions            override replacement of ansi black color
  --scrollDownInterval     interval to execute javascript scroll down   [default: 1000 (ms)]
+ --serverTimeout          http://nodejs.org/api/http.html#http_server_timeout  [default: 0 (no timeout)]
 ```
 - _An available port between 8080 - 8181 will be automatically picked if --port is not specified_
 - _ansi feature is on by default_
