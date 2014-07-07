@@ -33,7 +33,8 @@ var config = rc('bcat', {
 		backgrounds: {
 			'40': { style: 'background-color:#fffaaa' } // black
 		}
-	}
+	},
+	serverTimeout: 0
 })
 
 if (argv.usage) {
@@ -92,6 +93,8 @@ function cat(port) {
 	var server = http.createServer(handler)
 
 	server.listen(port)
+	
+	server.timeout = config.serverTimeout;
 
 	var command = 'open'
 
