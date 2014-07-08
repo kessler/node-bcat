@@ -37,20 +37,26 @@ var config = rc('bcat', {
 	serverTimeout: 0
 })
 
-if (argv.usage) {
-	console.log(require('./usage.js'))
-	process.exit(0)
-}
+var isLib = (process.mainModule !== module);
 
-if (config.port) {
-	cat(config.port)
+if (isLib) {
+	exports.pipeResponse = pipeResponse;
 } else {
-	findPort(8080, 8181, function(ports) {
-		if (ports.length === 0)
-			throw new Error('no available ports found between 8080 - 8181')
-		else
-			cat(ports.pop())
-	})
+	if (argv.usage) {
+		console.log(require('./usage.js'))
+		process.exit(0)
+	}
+
+	if (config.port) {
+		cat(config.port)
+	} else {
+		findPort(8080, 8181, function(ports) {
+			if (ports.length === 0)
+				throw new Error('no available ports found between 8080 - 8181')
+			else
+				cat(ports.pop())
+		})
+	}
 }
 
 /* this part is rendered into client side script (inside the browser) */
@@ -88,12 +94,56 @@ function run() {
 
 var script = 'var clientConfig = ' + JSON.stringify(clientConfig) + '\n' + run.toString() + '\nrun()'
 
+function pipeResponse(response, stream) {
+	var contentType = config.contentType
+
+	var bg = config.backgroundColor
+	var fg = config.foregroundColor
+
+	if (config.ansi) {
+		contentType = 'text/html'
+		stream = stream.pipe(ansi(config.ansiOptions))
+	}
+
+	if (!config.disableTabReplace) {
+		var tab = ''
+		for (var i = 0; i < config.tabLength; i++)
+			tab += ' '
+
+		var tabStream = replaceStream(tab, config.tabReplace)
+		stream = stream.pipe(tabStream)
+	}
+
+	if (!config.disableNewlineReplace) {
+		var osNewLineStream = replaceStream(os.EOL, config.newlineReplace)
+		var newLineStream = replaceStream('\n', config.newlineReplace)
+
+		stream = stream.pipe(osNewLineStream).pipe(newLineStream)
+	}
+
+	response.setHeader('Content-Type', contentType)
+
+	if (contentType === 'text/html') {
+
+		var style = 'body { background-color: ' + bg + '; color: ' + fg + '; font-family: monospace; white-space: pre-wrap; } ' +
+					'div#autoscroll { position: fixed; top: 1em; right: 1em }'
+
+
+		response.write('<html><head><style>' + style + '</style></head>' +
+						'<body>' +
+						'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
+						'<script>' + script + '</script><div id="container">')
+	}
+
+	stream.pipe(response)
+}
+
 function cat(port) {
 
 	var server = http.createServer(handler)
 
 	server.listen(port)
-	
+
 	server.timeout = config.serverTimeout;
 
 	var command = 'open'
@@ -105,49 +155,7 @@ function cat(port) {
 
 	function handler(request, response) {
 
-		var contentType = config.contentType
-
-		var bg = config.backgroundColor
-		var fg = config.foregroundColor
-
-		var stream = process.stdin
-
-		if (config.ansi) {
-			contentType = 'text/html'
-			stream = stream.pipe(ansi(config.ansiOptions))
-		}
-
-		if (!config.disableTabReplace) {
-			var tab = ''
-			for (var i = 0; i < config.tabLength; i++)
-				tab += ' '
-
-			var tabStream = replaceStream(tab, config.tabReplace)
-			stream = stream.pipe(tabStream)
-		}
-
-		if (!config.disableNewlineReplace) {
-			var osNewLineStream = replaceStream(os.EOL, config.newlineReplace)
-			var newLineStream = replaceStream('\n', config.newlineReplace)
-
-			stream = stream.pipe(osNewLineStream).pipe(newLineStream)
-		}
-
-		response.setHeader('Content-Type', contentType)
-
-		if (contentType === 'text/html') {
-
-			var style = 'body { background-color: ' + bg + '; color: ' + fg + ' } ' +
-						'div#autoscroll { position: fixed; top: 1em; right: 1em }'
-
-
-			response.write('<html><head><style>' + style + '</style></head>' +
-							'<body>' +
-							'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
-							'<script>' + script + '</script><div id="container">')
-		}
-
-		stream.pipe(response)
+		pipeResponse(response, process.stdin);
 
 		response.on('finish', function () {
 			process.exit(0)

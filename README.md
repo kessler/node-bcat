@@ -5,7 +5,7 @@ Inspired by [bcat](https://github.com/rtomayko/bcat)
 
 node-bcat features auto scrolling (with enable/disable), ansi to html coloring (--ansi) and behavior and color customization.
 
-This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc. 
+This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc.
 
 _Also, you should take a look at_ ___[scat](https://github.com/hughsk/scat)___ _which pipes javascript into your browser or_ ___[hcat](https://github.com/kessler/node-hcat)___ _that pipes html into your browser._
 ## example
@@ -49,5 +49,18 @@ then
 ```
 - _An available port between 8080 - 8181 will be automatically picked if --port is not specified_
 - _ansi feature is on by default_
+
+## library usage
+You can also use bcat as a library to pipe an arbitrary stream to a http response:
+```
+var bcat = require('./');
+var fs = require('fs');
+
+var http = require('http');
+http.createServer(function (req, res) {
+	var file = fs.createReadStream('./test.html');
+	bcat.pipeResponse(res, file);
+}).listen(1337, '127.0.0.1');
+```
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
