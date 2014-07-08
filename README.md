@@ -1,5 +1,5 @@
 # node-bcat
-Pipe to browser utility, Very useful for log tail fun :)
+Pipe to the browser utility, Very useful for log tail fun :)
 
 Inspired by [bcat](https://github.com/rtomayko/bcat)
 
