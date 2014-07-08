@@ -1,5 +1,7 @@
 # node-bcat
-Pipe to browser utility, this is (sort of a) a [bcat](https://github.com/rtomayko/bcat) clone in javascript. Very useful for log tail fun :)
+Pipe to the browser utility, Very useful for log tail fun :)
+
+Inspired by [bcat](https://github.com/rtomayko/bcat)
 
 node-bcat features auto scrolling (with enable/disable), ansi to html coloring (--ansi) and behavior and color customization.
 
@@ -43,8 +45,10 @@ then
  --ansi                   show colorful ansi (implies text/html)       [default: true]
  --ansiOptions            override replacement of ansi black color
  --scrollDownInterval     interval to execute javascript scroll down   [default: 1000 (ms)]
+ --serverTimeout          http://nodejs.org/api/http.html#http_server_timeout  [default: 0 (no timeout)]
 ```
 - _An available port between 8080 - 8181 will be automatically picked if --port is not specified_
 - _ansi feature is on by default_
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
+
