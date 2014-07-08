@@ -59,6 +59,7 @@ var fs = require('fs');
 var http = require('http');
 http.createServer(function (req, res) {
 	var file = fs.createReadStream('./test.html');
+	// Or: var file = require('child_process').spawn('tail', ['-c', '+0', '-f', './test.html']).stdout;
 	bcat.pipeResponse(res, file);
 }).listen(1337, '127.0.0.1');
 ```
