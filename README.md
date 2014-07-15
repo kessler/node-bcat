@@ -53,15 +53,17 @@ then
 ## library usage
 You can also use bcat as a library to pipe an arbitrary stream to a http response:
 ```
-var bcat = require('./');
-var fs = require('fs');
+var bcat = require('./')
+var fs = require('fs')
 
-var http = require('http');
+var http = require('http')
+var config = {/* any options from above, see index.js */}
 http.createServer(function (req, res) {
-	var file = fs.createReadStream('./test.html');
-	// Or: var file = require('child_process').spawn('tail', ['-c', '+0', '-f', './test.html']).stdout;
-	bcat.pipeResponse(res, file);
-}).listen(1337, '127.0.0.1');
+	var file = fs.createReadStream('./test.html')
+	// Or: var file = require('child_process').spawn('tail', ['-c', '+0', '-f', './test.html']).stdout
+	bcat.pipeResponse(confg, res, file)
+	// See testlib.js for a more full example and notes about caveats of spawning 'tail' processes
+}).listen(1337, '127.0.0.1')
 ```
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
