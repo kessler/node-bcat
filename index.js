@@ -1,21 +1,9 @@
-#!/usr/bin/env node
-
-
-var http = require('http')
-var child = require('child_process')
-var findPort = require('find-port')
 var ansi = require('ansi-html-stream')
+var http = require('http')
 var replaceStream = require('replacestream')
 var os = require('os')
-var rc = module.require('rc')
 
-var argv = require('optimist')
-	.boolean('ansi')
-	.boolean('disableTabReplace')
-	.boolean('disableNewlineReplace')
-	.argv
-
-var config = rc('bcat', {
+var defaultConfig = {
 	contentType: 'text/html',
 	scrollDownInterval: 1000,
 	backgroundColor: '#000000',
@@ -35,35 +23,24 @@ var config = rc('bcat', {
 		}
 	},
 	serverTimeout: 0
-})
+}
+exports.defaultConfig = defaultConfig
 
-var isLib = (process.mainModule !== module);
-
-if (isLib) {
-	exports.pipeResponse = pipeResponse;
-} else {
-	if (argv.usage) {
-		console.log(require('./usage.js'))
-		process.exit(0)
-	}
-
-	if (config.port) {
-		cat(config.port)
-	} else {
-		findPort(8080, 8181, function(ports) {
-			if (ports.length === 0)
-				throw new Error('no available ports found between 8080 - 8181')
+function defaults(obj, def) {
+	obj = obj || (Array.isArray(def) ? [] : {})
+	for (var field in def) {
+		if (def.hasOwnProperty(field)) {
+			if (typeof def[field] === 'object')
+				obj[field] = defaults(obj[field], def[field])
 			else
-				cat(ports.pop())
-		})
+				if (!obj.hasOwnProperty(field))
+					obj[field] = def[field]
+		}
 	}
+	return obj
 }
 
-/* this part is rendered into client side script (inside the browser) */
-var clientConfig = {
-	scrollDownInterval: config.scrollDownInterval
-};
-
+/* this function is rendered into client side script (inside the browser) */
 function run() {
 	var ref
 	function startAutoScroll() {
@@ -92,9 +69,15 @@ function run() {
 }
 /**/
 
-var script = 'var clientConfig = ' + JSON.stringify(clientConfig) + '\n' + run.toString() + '\nrun()'
+var script = '\n' + run.toString() + '\nrun()'
 
-function pipeResponse(response, stream) {
+function pipeResponse(config, response, stream) {
+	if (config instanceof http.OutgoingMessage) {
+		stream = response
+		response = config
+		config = {}
+	}
+	config = defaults(config, defaultConfig)
 	var contentType = config.contentType
 
 	var bg = config.backgroundColor
@@ -129,38 +112,15 @@ function pipeResponse(response, stream) {
 					'div#autoscroll { position: fixed; top: 1em; right: 1em }'
 
 
+		var clientConfig = {
+			scrollDownInterval: config.scrollDownInterval
+		}
 		response.write('<html><head><style>' + style + '</style></head>' +
 						'<body>' +
 						'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
-						'<script>' + script + '</script><div id="container">')
+						'<script>var clientConfig = ' + JSON.stringify(clientConfig) + script + '</script><div id="container">')
 	}
 
 	stream.pipe(response)
 }
-
-function cat(port) {
-
-	var server = http.createServer(handler)
-
-	server.listen(port)
-
-	server.timeout = config.serverTimeout;
-
-	var command = 'open'
-
-	if (process.platform === 'win32')
-		command = 'start'
-
-	child.exec(command + ' http://localhost:' + port);
-
-	function handler(request, response) {
-
-		pipeResponse(response, process.stdin);
-
-		response.on('finish', function () {
-			process.exit(0)
-		})
-	}
-}
-
-
+exports.pipeResponse = pipeResponse

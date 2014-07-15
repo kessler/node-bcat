@@ -4,7 +4,7 @@
   "description": "A pipe to browser utility",
   "main": "index.js",
   "bin": {
-    "bcat": "index.js"
+    "bcat": "bcat.js"
   },
   "scripts": {
     "test": "mocha"
