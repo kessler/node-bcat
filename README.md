@@ -57,7 +57,7 @@ var bcat = require('./')
 var fs = require('fs')
 
 var http = require('http')
-var config = {/* any options from above, see index.js */}
+var config = {/* most any option from above, see lib/pipeResponse.js */}
 http.createServer(function (req, res) {
 	var file = fs.createReadStream('./test.html')
 	// Or: var file = require('child_process').spawn('tail', ['-c', '+0', '-f', './test.html']).stdout

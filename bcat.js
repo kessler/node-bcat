@@ -3,7 +3,7 @@
 var http = require('http')
 var child = require('child_process')
 var findPort = require('find-port')
-var bcat = require('./index.js')
+var pipeResponse = require('./lib/pipeResponse.js')
 var rc = module.require('rc')
 
 var argv = require('optimist')
@@ -12,7 +12,7 @@ var argv = require('optimist')
 	.boolean('disableNewlineReplace')
 	.argv
 
-var config = rc('bcat', bcat.defaultConfig)
+var config = rc('bcat', pipeResponse.defaultConfig)
 
 if (argv.usage) {
 	console.log(require('./usage.js'))
@@ -47,7 +47,7 @@ function cat(port) {
 
 	function handler(request, response) {
 
-		bcat.pipeResponse(config, response, process.stdin)
+		pipeResponse.pipeResponse(config, response, process.stdin)
 
 		response.on('finish', function () {
 			process.exit(0)
