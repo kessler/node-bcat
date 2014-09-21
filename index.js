@@ -38,7 +38,7 @@ var config = rc('bcat', {
 	command: undefined
 })
 
-if (argv.usage) {
+if (argv.usage || argv.help) {
 	console.log(require('./usage.js'))
 	process.exit(0)
 }
