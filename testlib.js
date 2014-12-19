@@ -3,7 +3,7 @@ var bcat = require('./')
 var http = require('http')
 http.createServer(function (req, res) {
 	var proc = require('child_process').spawn('tail', ['-c', '+0', '-f', './test.html'])
-  var tail = proc.stdout
+	var tail = proc.stdout
 	bcat.pipeResponse(res, tail)
 	res.on('close', function () {
 		proc.kill()
