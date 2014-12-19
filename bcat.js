@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
+var isos = require('isos')
 var http = require('http')
 var child = require('child_process')
 var findPort = require('find-port')
 var pipeResponse = require('./lib/pipeResponse.js')
-var rc = module.require('rc')
+var rc = require('rc')
 
 var argv = require('optimist')
 	.boolean('ansi')
@@ -14,7 +15,7 @@ var argv = require('optimist')
 
 var config = rc('bcat', pipeResponse.defaultConfig)
 
-if (argv.usage) {
+if (argv.usage || argv.help) {
 	console.log(require('./usage.js'))
 	process.exit(0)
 }
@@ -38,12 +39,25 @@ function cat(port) {
 
 	server.timeout = config.serverTimeout
 
-	var command = 'open'
+	var command
 
-	if (process.platform === 'win32')
+	if (config.command) {
+		command = config.command
+	} else if (isos('osx')) {
+		command = 'open'
+	} else if (isos('windows')) {
 		command = 'start'
+	} else {
+		command = 'xdg-open'
+	}
 
-	child.exec(command + ' http://localhost:' + port)
+	child.exec(command + ' http://localhost:' + port, function (err, stdout, stderr) {
+		if (err) {
+			console.error(err)
+			console.error('cannot open url using command "%s"', command)
+			console.error('point your browser to http://localhost:%d to see the data', port)
+		}
+	})
 
 	function handler(request, response) {
 

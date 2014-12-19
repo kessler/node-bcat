@@ -13,6 +13,7 @@ module.exports = table([
 ['--disableNewlineReplace', 'disable new line replacement', 			'[default: false]\n'],
 ['--ansi', 					'show colorful ansi (implies text/html)', 	'[default: true]\n'],
 ['--ansiOptions', 			'override replacement of ansi black color\n', ''],
-['--scrollDownInterval', 	'interval to execute javascript scroll down', '[default: 1000 (ms)]\n']
-['--serverTimeout', 		'http://nodejs.org/api/http.html#http_server_timeout', '[default: 0 (no timeout)]\n']
+['--scrollDownInterval', 	'interval to execute javascript scroll down', '[default: 1000 (ms)]\n'],
+['--serverTimeout', 		'http://nodejs.org/api/http.html#http_server_timeout', '[default: 0 (no timeout)]\n'],
+['--command', 				'the command to launch the browser', 		'[default: osx: open, windows: start, other: xdg-open]\n']
 ]);
