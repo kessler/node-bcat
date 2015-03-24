@@ -56,5 +56,6 @@ then
 
 [bpipe](https://github.com/Marak/bpipe) - bidirectional piping between unix and the browser
 
+[browser-run](https://github.com/juliangruber/browser-run) - The easiest way of running code in a browser environment
 
 Inspired by a ruby [bcat](https://github.com/rtomayko/bcat) implementation
