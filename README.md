@@ -3,7 +3,7 @@ Pipe to the browser utility, Very useful for log tail fun :)
 
 node-bcat features auto scrolling (with enable/disable), ansi to html coloring (--ansi) and behavior and color customization.
 
-This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc. 
+This module uses [RC](https://github.com/dominictarr/rc) to manage its configuration, so in addition to command line arguments you may save your favorite configuration in .bcatrc.
 
 ## example
 ```
@@ -46,6 +46,22 @@ then
 ```
 - _An available port between 8080 - 8181 will be automatically picked if --port is not specified_
 - _ansi feature is on by default_
+
+## library usage
+You can also use bcat as a library to pipe an arbitrary stream to a http response:
+```
+var bcat = require('./')
+var fs = require('fs')
+
+var http = require('http')
+var config = {/* most any option from above, see lib/pipeResponse.js */}
+http.createServer(function (req, res) {
+	var file = fs.createReadStream('./test.html')
+	// Or: var file = require('child_process').spawn('tail', ['-c', '+0', '-f', './test.html']).stdout
+	bcat.pipeResponse(confg, res, file)
+	// See testlib.js for a more full example and notes about caveats of spawning 'tail' processes
+}).listen(1337, '127.0.0.1')
+```
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
 
