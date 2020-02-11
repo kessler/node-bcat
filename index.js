@@ -18,8 +18,8 @@ var argv = require('optimist')
 var config = rc('bcat', {
 	contentType: 'text/html',
 	scrollDownInterval: 1000,
-	backgroundColor: '#000000',
-	foregroundColor: '#ffffff',
+	backgroundColor: '#333',
+	foregroundColor: '#fefefe',
 	tabLength: 4,
 	tabReplace: '&nbsp;&nbsp;&nbsp;&nbsp;',
 	disableTabReplace: false,
@@ -151,12 +151,14 @@ function cat(port) {
 
 		if (contentType === 'text/html') {
 
-			var style = 'body { background-color: ' + bg + '; color: ' + fg + ' } ' +
-						'div#autoscroll { position: fixed; top: 1em; right: 1em }'
+			var style = 'body { background-color: ' + bg + '; color: ' + fg + '; font-family:Monaco, Menlo, monospace; padding:2em;} ' +
+						'div#headline { position: absolute; top: 2em; right: 2em ; text-align: right;} ' +
+						'div#autoscroll { position: fixed; bottom: 2em; right: 2em ; }' 
 
 
 			response.write('<html><head><style>' + style + '</style></head>' +
 							'<body>' +
+							'<div id="headline">Pipe from terminal to browser<br> <br><code style="color:gray">echo 123 | bcat<br>node index.js | bcat<br>tail -f $HISTFILE | bcat</code></div>' +
 							'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
 							'<script>' + script + '</script><div id="container">')
 		}
