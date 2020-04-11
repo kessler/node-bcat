@@ -9,12 +9,6 @@ var replaceStream = require('replacestream')
 var os = require('os')
 var rc = require('rc')
 
-var argv = require('optimist')
-	.boolean('ansi')
-	.boolean('disableTabReplace')
-	.boolean('disableNewlineReplace')
-	.argv
-
 var config = rc('bcat', {
 	contentType: 'text/html',
 	scrollDownInterval: 1000,
@@ -38,7 +32,7 @@ var config = rc('bcat', {
 	command: undefined
 })
 
-if (argv.usage || argv.help) {
+if (config.usage || config.help) {
 	console.log(require('./usage.js'))
 	process.exit(0)
 }
