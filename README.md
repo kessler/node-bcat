@@ -50,6 +50,8 @@ then
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
 
 ## related
+[catchart](https://github.com/kessler/catchart) - pipe data into charts in your browser
+
 [scat](https://github.com/hughsk/scat) - pipes javascript into your browser
 
 [hcat](https://github.com/kessler/node-hcat) - pipes html into your browser
