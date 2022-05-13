@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
+var opn = require('opn')
 var isos = require('isos')
 var http = require('http')
 var child = require('child_process')
-var findPort = require('find-port')
 var ansi = require('ansi-html-stream')
 var replaceStream = require('replacestream')
 var os = require('os')
 var rc = require('rc')
 
 var config = rc('bcat', {
+	port: 0,
 	contentType: 'text/html',
 	scrollDownInterval: 1000,
 	backgroundColor: '#333',
@@ -22,8 +23,8 @@ var config = rc('bcat', {
 	ansi: true,
 	ansiOptions: {
 		foregrounds: {
-	    	'30': { style: 'color:#fffaaa' } // black
-	    },
+			'30': { style: 'color:#fffaaa' } // black
+		},
 		backgrounds: {
 			'40': { style: 'background-color:#fffaaa' } // black
 		}
@@ -37,16 +38,7 @@ if (config.usage || config.help) {
 	process.exit(0)
 }
 
-if (config.port) {
-	cat(config.port)
-} else {
-	findPort(8080, 8181, function(ports) {
-		if (ports.length === 0)
-			throw new Error('no available ports found between 8080 - 8181')
-		else
-			cat(ports.pop())
-	})
-}
+cat(config.port)
 
 /* this part is rendered into client side script (inside the browser) */
 var clientConfig = {
@@ -55,8 +47,9 @@ var clientConfig = {
 
 function run() {
 	var ref
+
 	function startAutoScroll() {
-		ref = window.setInterval(function () {
+		ref = window.setInterval(function() {
 			document.getElementById('container').scrollIntoView(false)
 		}, clientConfig.scrollDownInterval)
 	}
@@ -65,19 +58,19 @@ function run() {
 		clearInterval(ref)
 	}
 
-    var scrollToggle = document.getElementById('autoscrollToggle')
+	var scrollToggle = document.getElementById('autoscrollToggle')
 
-    if (scrollToggle) {
-    	scrollToggle.addEventListener('change', function () {
-    		if (scrollToggle.checked) {
-    			startAutoScroll()
-    		} else {
-    			stopAutoScroll()
-    		}
-    	});
-    }
+	if (scrollToggle) {
+		scrollToggle.addEventListener('change', function() {
+			if (scrollToggle.checked) {
+				startAutoScroll()
+			} else {
+				stopAutoScroll()
+			}
+		});
+	}
 
-    startAutoScroll()
+	startAutoScroll()
 }
 /**/
 
@@ -87,82 +80,72 @@ function cat(port) {
 
 	var server = http.createServer(handler)
 
-	server.listen(port)
-	
-	server.timeout = config.serverTimeout;
+	server.on('listening', function () {
+		var url = 'http://localhost:' + server.address().port
 
-	var command
-
-	if (config.command) {
-		command = config.command
-	} else if (isos('osx')) {
-		command = 'open'
-	} else if (isos('windows')) {
-		command = 'start'
-	} else {
-		command = 'xdg-open'
-	}
-
-	child.exec(command + ' http://localhost:' + port, function (err, stdout, stderr) {
-		if (err) {
-			console.error(err)
-			console.error('cannot open url using command "%s"', command)
-			console.error('point your browser to http://localhost:%d to see the data', port)
+		if (!process.env.BROWSER) {
+			console.error('The environment variable $BROWSER is not set. Falling back to default opening mechanism.')
+			opn('http://localhost:' + server.address().port, { wait: false })
+		} else {
+			console.error('The environment variable $BROWSER is set to "' + $BROWSER + '"')
+			child.spawn(process.env.BROWSER, [url], { detached: true })
 		}
 	})
 
-	function handler(request, response) {
+	server.listen(port)
 
-		var contentType = config.contentType
-
-		var bg = config.backgroundColor
-		var fg = config.foregroundColor
-
-		var stream = process.stdin
-
-		if (config.ansi) {
-			contentType = 'text/html'
-			stream = stream.pipe(ansi(config.ansiOptions))
-		}
-
-		if (!config.disableTabReplace) {
-			var tab = ''
-			for (var i = 0; i < config.tabLength; i++)
-				tab += ' '
-
-			var tabStream = replaceStream(tab, config.tabReplace)
-			stream = stream.pipe(tabStream)
-		}
-
-		if (!config.disableNewlineReplace) {
-			var osNewLineStream = replaceStream(os.EOL, config.newlineReplace)
-			var newLineStream = replaceStream('\n', config.newlineReplace)
-
-			stream = stream.pipe(osNewLineStream).pipe(newLineStream)
-		}
-
-		response.setHeader('Content-Type', contentType)
-
-		if (contentType === 'text/html') {
-
-			var style = 'body { background-color: ' + bg + '; color: ' + fg + '; font-family:Monaco, Menlo, monospace; padding:2em;} ' +
-						'div#headline { position: absolute; top: 2em; right: 2em ; text-align: right;} ' +
-						'div#autoscroll { position: fixed; bottom: 2em; right: 2em ; }' 
-
-
-			response.write('<html><head><style>' + style + '</style></head>' +
-							'<body>' +
-							'<div id="headline">Pipe from terminal to browser<br> <br><code style="color:gray">echo 123 | bcat<br>node index.js | bcat<br>tail -f $HISTFILE | bcat</code></div>' +
-							'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
-							'<script>' + script + '</script><div id="container">')
-		}
-
-		stream.pipe(response)
-
-		response.on('finish', function () {
-			process.exit(0)
-		})
-	}
+	server.timeout = config.serverTimeout;
 }
 
+function handler(request, response) {
 
+	var contentType = config.contentType
+
+	var bg = config.backgroundColor
+	var fg = config.foregroundColor
+
+	var stream = process.stdin
+
+	if (config.ansi) {
+		contentType = 'text/html'
+		stream = stream.pipe(ansi(config.ansiOptions))
+	}
+
+	if (!config.disableTabReplace) {
+		var tab = ''
+		for (var i = 0; i < config.tabLength; i++)
+			tab += ' '
+
+		var tabStream = replaceStream(tab, config.tabReplace)
+		stream = stream.pipe(tabStream)
+	}
+
+	if (!config.disableNewlineReplace) {
+		var osNewLineStream = replaceStream(os.EOL, config.newlineReplace)
+		var newLineStream = replaceStream('\n', config.newlineReplace)
+
+		stream = stream.pipe(osNewLineStream).pipe(newLineStream)
+	}
+
+	response.setHeader('Content-Type', contentType)
+
+	if (contentType === 'text/html') {
+
+		var style = 'body { background-color: ' + bg + '; color: ' + fg + '; font-family:Monaco, Menlo, monospace; padding:2em;} ' +
+			'div#headline { position: fixed; top: 2em; right: 2em ; text-align: right;} ' +
+			'div#autoscroll { position: fixed; bottom: 2em; right: 2em ; }'
+
+
+		response.write('<!DOCTYPE html><html><head><style>' + style + '</style></head>' +
+			'<body>' +
+			'<div id="headline">Pipe from terminal to browser<br> <br><code style="color:gray">started at:' + new Date() + '</code></div>' +
+			'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
+			'<script>' + script + '</script><div id="container">')
+	}
+
+	stream.pipe(response)
+
+	response.on('finish', function() {
+		process.exit(0)
+	})
+}

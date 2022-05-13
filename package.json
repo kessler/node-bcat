@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "ansi-html-stream": "0.0.2",
-    "find-port": "^1.0.0",
     "isos": "0.0.3",
     "minimist": "^1.2.5",
+    "opn": "^6.0.0",
     "rc": "^1.2.8",
     "replacestream": "0.0.6",
     "text-table": "~0.2.0"

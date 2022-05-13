@@ -2,7 +2,7 @@ var table = require('text-table');
 
 module.exports = table([
 ['Options:\n'],
-['--port', 					'set a port for this bcat execution\n', 	''],
+['--port', 					'set a port for this bcat execution\n', 	'[default: random port]'],
 ['--contentType', 			'content type header, must be lower case', 	'[default: "text/html"]\n'],
 ['--backgroundColor', 		'(only in text/html) ', 					'[default: "#000000"]\n'],
 ['--foregroundColor', 		'(only in text/html) ', 					'[default: "#ffffff"]\n'],
