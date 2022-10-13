@@ -136,7 +136,9 @@ function handler(request, response) {
 			'div#autoscroll { position: fixed; bottom: 2em; right: 2em ; }'
 
 
-		response.write('<!DOCTYPE html><html><head><style>' + style + '</style></head>' +
+		response.write('<!DOCTYPE html><html><head>' +
+			'<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">' +
+			'<style>' + style + '</style></head>' +
 			'<body>' +
 			'<div id="headline">Pipe from terminal to browser<br> <br><code style="color:gray">started at:' + new Date() + '</code></div>' +
 			'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
