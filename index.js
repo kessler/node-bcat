@@ -133,15 +133,21 @@ function handler(request, response) {
 
 		var style = 'body { background-color: ' + bg + '; color: ' + fg + '; font-family:Monaco, Menlo, monospace; padding:2em;} ' +
 			'div#headline { position: fixed; top: 2em; right: 2em ; text-align: right;} ' +
-			'div#autoscroll { position: fixed; bottom: 2em; right: 2em ; }'
-
+			'div#autoscroll { position: fixed; bottom: 2em; right: 2em ; } ' + 
+			'.noselect { ' +
+			'-webkit-touch-callout: none; /* iOS Safari */ ' +
+			'-webkit-user-select: none; /* Safari */ ' +
+      '-khtml-user-select: none; /* Konqueror HTML */ ' +
+      '-moz-user-select: none; /* Old versions of Firefox */ ' +
+      '-ms-user-select: none; /* Internet Explorer/Edge */ ' +
+      'user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */ }'
 
 		response.write('<!DOCTYPE html><html><head>' +
 			'<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">' +
 			'<style>' + style + '</style></head>' +
 			'<body>' +
-			'<div id="headline">Pipe from terminal to browser<br> <br><code style="color:gray">started at:' + new Date() + '</code></div>' +
-			'<div id="autoscroll">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
+			'<div id="headline" class="noselect">Pipe from terminal to browser<br> <br><code style="color:gray">started at:' + new Date() + '</code></div>' +
+			'<div id="autoscroll" class="noselect">Auto scroll <input type="checkbox" id="autoscrollToggle" checked /></div>' +
 			'<script>' + script + '</script><div id="container">')
 	}
 
