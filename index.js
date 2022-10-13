@@ -87,7 +87,7 @@ function cat(port) {
 			console.error('The environment variable $BROWSER is not set. Falling back to default opening mechanism.')
 			opn('http://localhost:' + server.address().port, { wait: false })
 		} else {
-			console.error('The environment variable $BROWSER is set to "' + $BROWSER + '"')
+			console.error('The environment variable $BROWSER is set to "' + process.env.BROWSER + '"')
 			child.spawn(process.env.BROWSER, [url], { detached: true })
 		}
 	})
