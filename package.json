@@ -31,7 +31,7 @@
     "open": "^10.1.0",
     "rc": "^1.2.8",
     "replacestream": "0.0.6",
-    "text-table": "~0.2.0"
+    "text-table": "^0.2.0"
   },
   "devDependencies": {
     "eyes": "~0.1.8"

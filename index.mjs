@@ -8,6 +8,7 @@ import ansi from '@kessler/ansi-html-stream';
 import replaceStream from 'replacestream';
 import os from 'os';
 import rc from 'rc';
+import usage from './usage.mjs'
 
 const config = rc('bcat', {
     port: 0,
@@ -34,7 +35,7 @@ const config = rc('bcat', {
 });
 
 if (config.usage || config.help) {
-    console.log(await import('./usage.js'));
+    console.log(usage);
     process.exit(0);
 }
 
