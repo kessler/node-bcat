@@ -2,9 +2,9 @@
   "name": "bcat",
   "version": "2.0.0",
   "description": "A pipe to browser utility",
-  "main": "index.js",
+  "main": "index.mjs",
   "bin": {
-    "bcat": "index.js"
+    "bcat": "index.mjs"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,10 +25,10 @@
     "url": "https://github.com/kessler/node-bcat/issues"
   },
   "dependencies": {
-    "ansi-html-stream": "0.0.2",
+    "@kessler/ansi-html-stream": "^1.0.0",
     "isos": "0.0.3",
     "minimist": "^1.2.5",
-    "opn": "^6.0.0",
+    "open": "^10.1.0",
     "rc": "^1.2.8",
     "replacestream": "0.0.6",
     "text-table": "~0.2.0"

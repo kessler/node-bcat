@@ -49,6 +49,10 @@ then
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
 
+## older version
+
+Since 3.0.0 the code base was updated and all dependencies too. The older version is at `bcat@2.0.0`
+
 ## related
 [catchart](https://github.com/kessler/catchart) - pipe data into charts in your browser
 
