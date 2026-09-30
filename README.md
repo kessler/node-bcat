@@ -24,7 +24,7 @@ setInterval(function () {
 ```
 then
 ```
-> node test.js | bcat
+> node emitter.js | bcat
 ```
 ![screenshot](https://raw.github.com/kessler/static/master/node-bcat.png)
 

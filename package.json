@@ -34,6 +34,7 @@
     "text-table": "^0.2.0"
   },
   "devDependencies": {
+    "ava": "^6.2.0",
     "eyes": "~0.1.8"
   }
 }
