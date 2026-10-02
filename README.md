@@ -14,15 +14,7 @@ This module uses [RC](https://github.com/dominictarr/rc) to manage its configura
 // redirect error stream also
 > node index.js 2>&1 | bcat
 ```
-Want to see something moving too?
-
-test.js:
-```js
-setInterval(function () {
-	console.log(1)
-}, 1000)
-```
-then
+Want to see something moving too? Clone this repo, `npm install`, then run the included emitter, which prints an object every second:
 ```
 > node emitter.js | bcat
 ```
@@ -30,22 +22,30 @@ then
 
 ## usage
 ```
- --port                   set a port for this bcat execution
- --contentType            content type header, must be lower case      [default: "text/html"]
- --backgroundColor        (only in text/html)                          [default: "#000000"]
- --foregroundColor        (only in text/html)                          [default: "#ffffff"]
- --tabLength              length of a tab in spaces                    [default: 4]
- --tabReplace             tab replacement                              [default: "&nbsp;&nbsp;&nbsp;&nbsp;"
- --disableTabReplace      disable tab replacement                      [default: false]
- --newlineReplace         new line replacement                         [default: "<br />"
- --disableNewlineReplace  disable new line replacement                 [default: false]
- --ansi                   show colorful ansi (implies text/html)       [default: true]
- --ansiOptions            override replacement of ansi black color
- --scrollDownInterval     interval to execute javascript scroll down   [default: 1000 (ms)]
- --serverTimeout          http://nodejs.org/api/http.html#http_server_timeout  [default: 0 (no timeout)]
+Usage: <command> | bcat [options]
+
+Options:
+
+--port                   set a port for this bcat execution              [default: random free port]
+--contentType            content type header, must be lower case         [default: "text/html"]
+--backgroundColor        (only in text/html)                             [default: "#333"]
+--foregroundColor        (only in text/html)                             [default: "#fefefe"]
+--tabLength              width of a tab, in spaces                       [default: 4]
+--tabReplace             replace tab characters with this string         [default: none, tabs are rendered natively]
+--disableTabReplace      disable tab replacement                         [default: false]
+--newlineReplace         new line replacement                            [default: "<br />"]
+--disableNewlineReplace  disable new line replacement                    [default: false]
+--ansi                   show colorful ansi (implies text/html)          [default: true, disable with --no-ansi]
+--ansiOptions            override ansi colors (see README)
+--scrollDownInterval     interval to execute javascript scroll down      [default: 1000 (ms)]
+--serverTimeout          https://nodejs.org/api/http.html#servertimeout  [default: 0 (no timeout)]
+--command                the command to launch the browser               [default: $BROWSER, otherwise the os default]
 ```
-- _An available port between 8080 - 8181 will be automatically picked if --port is not specified_
-- _ansi feature is on by default_
+- _A random free port is picked if --port is not specified_
+- _ansi feature is on by default, disable it with `--no-ansi`_
+- _the browser is launched using `--command`, then `$BROWSER`, then the os default. If launching fails, open the printed url manually_
+- _every browser tab connected to bcat receives the output from the moment it connects. While no tab is connected, bcat pauses reading its input, so reloading the page does not lose output_
+- _override ansi colors with `--ansiOptions.<group>.<code>.style`, e.g. `--ansiOptions.foregrounds.30.style="color:#fff"`. groups are `foregrounds`, `backgrounds`, `bold` and `underline`_
 
 ![be a good cat](https://raw.github.com/kessler/static/master/bcat.jpg)
 
